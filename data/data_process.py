@@ -39,4 +39,15 @@ for img_name in names:
 	label = np.transpose(label,[1,0,2])
 	ind = ((-spacing>0)-0.5)*2
 	label = label[::int(ind[1]),::int(ind[0]),::int(ind[2])]
-	label = resi
+	label = resize(label.astype(np.float64),new_size,anti_aliasing=False,order=0)
+	print(img_name, 'loaded', new_size, spacing)
+    
+	# get the bounding box of foreground
+	tempL = np.array(np.where(label>0))
+	print(tempL[0].shape)
+	bbox = np.array([[max(0, np.min(tempL[0])-pad[0]), min(label.shape[0], np.max(tempL[0])+pad[0])], \
+	[max(0, np.min(tempL[1])-pad[1]), min(label.shape[1], np.max(tempL[1])+pad[1])], \
+	[max(0, np.min(tempL[2])-pad[2]), min(label.shape[2], np.max(tempL[2])+pad[2])]])
+	center = np.mean(bbox,1).astype(int)
+	bbL = bbox[:,1]-bbox[:,0]
+	L = int(np.max(bbox[:,1]-
