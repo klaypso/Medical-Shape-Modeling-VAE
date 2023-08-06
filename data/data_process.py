@@ -21,4 +21,22 @@ for img_name in names:
 	# label_name = 'label' + img_name.split('_')[0][5:8] # for synapse
 
 	image = nib.load(path.join(image_path, img_name))
-	spacing = image.affine[[0,1
+	spacing = image.affine[[0,1,2], [0,1,2]]
+    
+	# deciding the direction
+	ind = ((-spacing>0)-0.5)*2
+	image = image.get_data()
+	image = np.transpose(image,[1,0,2])
+	image = image[::int(ind[1]),::int(ind[0]),::int(ind[2])]
+    
+	# resample to 1mm
+	new_size = (np.array(image.shape)*np.abs(spacing)).astype(np.int)
+	image = resize(image.astype(np.float64),new_size)
+
+	label = nib.load(path.join(label_path, label_name))
+	spacing = label.affine[[0,1,2],[0,1,2]]
+	label = label.get_data()
+	label = np.transpose(label,[1,0,2])
+	ind = ((-spacing>0)-0.5)*2
+	label = label[::int(ind[1]),::int(ind[0]),::int(ind[2])]
+	label = resi
