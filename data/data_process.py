@@ -65,4 +65,11 @@ for img_name in names:
 	Out_label = \
 	label[max(0,center[0]-int(L/2)):min(label.shape[0],center[0]-int(L/2)+L),\
 	max(0,center[1]-int(L/2)):min(label.shape[1],center[1]-int(L/2)+L),\
-	max(0,cen
+	max(0,center[2]-int(L/2)):min(label.shape[2],center[2]-int(L/2)+L)]
+	
+	path_prefix = path.join(to_path, img_name.split('.')[0])
+	if not os.path.exists(path_prefix):
+		os.makedirs(path_prefix)
+	np.save(path.join(path_prefix, 'img.npy'), Out_img.astype(np.int16))
+	np.save(path.join(path_prefix, 'label.npy'), Out_label.astype(np.int8))
+	np.save(path.join(path_prefix, 'merge.npy'), np.stack((Out_img,Out_label),axis=-1).astype(np.int16))
