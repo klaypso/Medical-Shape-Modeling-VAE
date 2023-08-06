@@ -50,4 +50,19 @@ for img_name in names:
 	[max(0, np.min(tempL[2])-pad[2]), min(label.shape[2], np.max(tempL[2])+pad[2])]])
 	center = np.mean(bbox,1).astype(int)
 	bbL = bbox[:,1]-bbox[:,0]
-	L = int(np.max(bbox[:,1]-
+	L = int(np.max(bbox[:,1]-bbox[:,0]))
+	print(L)
+
+	# extract a cubic box that contain all the foreground
+	out = \
+		image[max(0,center[0]-int(L/2)):min(label.shape[0],center[0]-int(L/2)+L),\
+		max(0,center[1]-int(L/2)):min(label.shape[1],center[1]-int(L/2)+L),\
+		max(0,center[2]-int(L/2)):min(label.shape[2],center[2]-int(L/2)+L)]
+	Shape = list(out.shape)
+	Shape.append(2)
+	print(Shape)
+	Out_img = out
+	Out_label = \
+	label[max(0,center[0]-int(L/2)):min(label.shape[0],center[0]-int(L/2)+L),\
+	max(0,center[1]-int(L/2)):min(label.shape[1],center[1]-int(L/2)+L),\
+	max(0,cen
