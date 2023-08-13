@@ -1,4 +1,5 @@
-python main_target.py domain_syn_dh \
+
+python main_target.py domain_syn_dh_ft1 \
     -G $1 \
     --method domain_adaptation \
     --load_prefix seg_nih \
@@ -11,6 +12,7 @@ python main_target.py domain_syn_dh \
     --pan_index 11 \
     --lambda_vae 0.1 \
     --domain_loss_type 8 \
+    --val_finetune 1 \
     --eval_epoch 1 \
     --save_epoch 100 \
     --max_epoch 50
