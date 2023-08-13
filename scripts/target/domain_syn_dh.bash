@@ -1,4 +1,4 @@
-python main_target.py domain_syn_dh_ft1 \
+python main_target.py domain_syn_dh \
     -G $1 \
     --method domain_adaptation \
     --load_prefix seg_nih \
@@ -10,6 +10,3 @@ python main_target.py domain_syn_dh_ft1 \
     --data_path data/Multi_all.json \
     --pan_index 11 \
     --lambda_vae 0.1 \
-    --eval_epoch 1 \
-    --save_epoch 100 \
-    --max_epoch 50
