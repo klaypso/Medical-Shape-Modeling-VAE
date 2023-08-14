@@ -20,4 +20,30 @@ def scatter_plot(data, title=None, x_label="x_label", y_label="y_label", color_p
     plt.scatter(x0[:], y0[:], 25, color_point)
 
     #直线拟合与绘制
-    A1, B1 = optimize.curve_fi
+    A1, B1 = optimize.curve_fit(f_1, x0, y0)[0]
+    x1 = np.arange(0, 1, 0.005)
+    y1 = A1*x1 + B1
+    # plt.plot(x1, y1, color_line)
+
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.xlim(0.0, 1.0)
+    plt.ylim(0.0, 1.0)
+
+    plt.show()
+    plt.savefig(os.path.join("figure", "analysis_figure", f'{title}.jpg'))
+
+
+def scatter_plot_multi(data1, data2, title=None, x_label="x_label", y_label="y_label", color1="red", color2="blue"):
+    plt.figure()
+
+    # Color1
+    x0 = []
+    y0 = []
+    for _, i in data1.items():
+        x0.append(i[0])
+        y0.append(i[1])
+
+    #绘制散点
+    plt.scatter(x0
