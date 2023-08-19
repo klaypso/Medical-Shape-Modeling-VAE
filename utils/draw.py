@@ -46,4 +46,36 @@ def scatter_plot_multi(data1, data2, title=None, x_label="x_label", y_label="y_l
         y0.append(i[1])
 
     #绘制散点
-    plt.scatter(x0
+    plt.scatter(x0[:], y0[:], 25, color1)
+
+    #直线拟合与绘制
+    A1, B1 = optimize.curve_fit(f_1, x0, y0)[0]
+    x1 = np.arange(0, 1, 0.005)
+    y1 = A1*x1 + B1
+    plt.plot(x1, y1, color1)
+
+
+    # Color2
+    x0 = []
+    y0 = []
+    for _, i in data2.items():
+        x0.append(i[0])
+        y0.append(i[1])
+
+    #绘制散点
+    plt.scatter(x0[:], y0[:], 25, color2)
+
+    #直线拟合与绘制
+    A1, B1 = optimize.curve_fit(f_1, x0, y0)[0]
+    x1 = np.arange(0, 1, 0.005)
+    y1 = A1*x1 + B1
+    # plt.plot(x1, y1, color2)
+
+
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.xlim(0.0, 1.0)
+    plt.ylim(0.0, 1.0)
+
+    
