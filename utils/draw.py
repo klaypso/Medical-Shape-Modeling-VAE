@@ -78,4 +78,5 @@ def scatter_plot_multi(data1, data2, title=None, x_label="x_label", y_label="y_l
     plt.xlim(0.0, 1.0)
     plt.ylim(0.0, 1.0)
 
-    
+    plt.show()
+    plt.savefig(os.path.join("figure", "analysis_figure", f'{title}.jpg'))
