@@ -12,4 +12,15 @@ class Saver():
         if not os.path.exists(self.display_dir):
             os.makedirs(self.display_dir)
         # create tensorboard writer
-        self.writer = SummaryW
+        self.writer = SummaryWriter(logdir=self.display_dir)
+
+  # write losses and images to tensorboard
+    def write_display(self, total_it, loss, image=None, force_write=False):
+        if force_write or (total_it + 1) % self.display_freq == 0:
+            # write img
+            if image is not None:
+                for m in image:
+                    image_dis = torchvision.utils.make_grid(image[m].detach().cpu(), nrow=5)/2 + 0.5
+                    self.writer.add_image(m, image_dis, total_it)
+            for l in loss:
+                self.writer.add_scalar(l[0], l[1], total
