@@ -23,4 +23,5 @@ class Saver():
                     image_dis = torchvision.utils.make_grid(image[m].detach().cpu(), nrow=5)/2 + 0.5
                     self.writer.add_image(m, image_dis, total_it)
             for l in loss:
-                self.writer.add_scalar(l[0], l[1], total
+                self.writer.add_scalar(l[0], l[1], total_it)
+                print(l[0], l[1], total_it)
