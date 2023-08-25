@@ -47,4 +47,24 @@ def check_connection(tumor_index,image):
     for i in range(L):
 
         if tempC[tumor_index[i,0],tumor_index[i,1],tumor_index[i,2]]==0:
-         
+            num_component += 1
+            Tag(temp,tumor_index[i,:],tempC,num_component)
+    cc=[]
+    for i in range(L): 
+        cc.append(tempC[tumor_index[i,0],tumor_index[i,1],tumor_index[i,2]])
+    cc = np.array(cc)
+    
+    return cc
+
+
+
+class BaseDataset(Dataset):
+    """
+    Base dataset class. Expects a list of dictionaries and a set of transforms
+    to load data and transform it
+    """
+    def __init__(self, listdict, transforms=None):
+
+        assert(type(listdict) == list), "Must provide a list of dicts to listdict"
+
+        sel
