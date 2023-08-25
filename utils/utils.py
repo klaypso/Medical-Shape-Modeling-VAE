@@ -29,4 +29,22 @@ def Tag(temp,index,tempC,num_component):
                 for k in range(-1,2):
                     new_index = [min(max(temp_index[0]+i,0),temp.shape[0]-1),min(max(temp_index[1]+j,0),temp.shape[1]-1),min(max(temp_index[2]+k,0),temp.shape[2]-1)]
                     if temp[new_index[0],new_index[1],new_index[2]]==1 and tempC[new_index[0],new_index[1],new_index[2]]==0:
-               
+                        expand.append(new_index)
+                        tempC[new_index[0],new_index[1],new_index[2]]=num_component
+                        count+=1
+                        #print(count)
+
+    return 
+def check_connection(tumor_index,image):
+
+    L = tumor_index.shape[0]
+    temp = np.zeros_like(image)
+    tempC = np.zeros_like(image)
+    for i in range(L):
+        temp[tumor_index[i,0],tumor_index[i,1],tumor_index[i,2]] = 1
+    
+    num_component = 0
+    for i in range(L):
+
+        if tempC[tumor_index[i,0],tumor_index[i,1],tumor_index[i,2]]==0:
+         
