@@ -67,4 +67,25 @@ class BaseDataset(Dataset):
 
         assert(type(listdict) == list), "Must provide a list of dicts to listdict"
 
-        sel
+        self._listdict = listdict
+        self._transforms = transforms
+        logging.debug('Dataset initialized with transform {}'.format(self._transforms))
+
+
+    def __len__(self):
+        return len(self._listdict)
+
+
+
+    def __getitem__(self, idx):
+
+        # here we assume the list dict is paths or image labels, we copy so as not
+        # to modify the original list
+        sample = copy(self._listdict[idx])
+        if self._transforms:
+            sample = self._transforms(sample)
+
+        return sample
+
+class BaseTransform(object):
+    d
