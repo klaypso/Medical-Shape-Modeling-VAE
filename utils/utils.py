@@ -88,4 +88,23 @@ class BaseDataset(Dataset):
         return sample
 
 class BaseTransform(object):
-    d
+    def __init__(self, fields):
+        assert(isinstance(fields, (str, list))), "Fields must be a string or a list of strings"
+
+        if isinstance(fields, str):
+            fields = [fields]
+        self.fields = fields
+
+    def __call__(self, sample):
+        assert(isinstance(sample, dict)), "Each sample must be a dict"
+
+
+class CopyField(BaseTransform):
+    """
+    Copy one field to another
+    """
+
+    def __init__(self, fields, to_field):
+        super().__init__(fields)
+        if len(fields) != 1:
+    
