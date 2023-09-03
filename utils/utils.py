@@ -107,4 +107,24 @@ class CopyField(BaseTransform):
     def __init__(self, fields, to_field):
         super().__init__(fields)
         if len(fields) != 1:
-    
+            raise ValueError("Only provide one field for source")
+
+        if isinstance(to_field, list):
+            if len(to_field) != 1:
+                raise ValueError("Only provide one field for destination")
+        else:
+            to_field = [to_field]
+
+        self.to_field = to_field
+
+    def __call__(self, data_dict):
+        data_dict[self.to_field[0]] = copy(data_dict[self.fields[0]])
+
+        return data_dict
+
+
+class NiiLoader(BaseTransform):
+    """
+    Loads an image directly to np.array using npy files
+    """
+    def __init__(self, fields, root_dir='/', d
