@@ -142,4 +142,8 @@ class NiiLoader(BaseTransform):
         if not self.pre_set:
             self.pre_set = random.sample(self.fields,2)
 
-        data_dict['source'] = sitk.GetArrayFromImage(sitk.R
+        data_dict['source'] = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(self.root_dir, data_dict[self.pre_set[0]]))).astype(self.dtype)
+        data_dict['target'] = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(self.root_dir, data_dict[self.pre_set[1]]))).astype(self.dtype)
+        data_dict['source_lung'] = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(self.root_dir, data_dict[self.pre_set[0]+'_lung']))).astype(self.dtype)
+        data_dict['target_lung'] = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(self.root_dir, data_dict[self.pre_set[1]+'_lung']))).astype(self.dtype)
+        if data_dict.
