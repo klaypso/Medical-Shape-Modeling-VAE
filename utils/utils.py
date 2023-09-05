@@ -146,4 +146,10 @@ class NiiLoader(BaseTransform):
         data_dict['target'] = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(self.root_dir, data_dict[self.pre_set[1]]))).astype(self.dtype)
         data_dict['source_lung'] = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(self.root_dir, data_dict[self.pre_set[0]+'_lung']))).astype(self.dtype)
         data_dict['target_lung'] = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(self.root_dir, data_dict[self.pre_set[1]+'_lung']))).astype(self.dtype)
-        if data_dict.
+        if data_dict.get(self.pre_set[0]+'_pancreas',None) and data_dict.get(self.pre_set[1]+'_pancreas',None):
+            data_dict['source_pancreas'] = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(self.root_dir, data_dict[self.pre_set[0]+'_pancreas']))).astype(self.dtype)
+            data_dict['target_pancreas'] = sitk.GetArrayFromImage(sitk.ReadImage(os.path.join(self.root_dir, data_dict[self.pre_set[1]+'_pancreas']))).astype(self.dtype)
+        return data_dict
+class ReadNPY(BaseTransform):
+    def __init__(self, root_dir='/',root_dir2='/',root_dir3=None):
+        super().
