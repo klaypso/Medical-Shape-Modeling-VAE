@@ -152,4 +152,18 @@ class NiiLoader(BaseTransform):
         return data_dict
 class ReadNPY(BaseTransform):
     def __init__(self, root_dir='/',root_dir2='/',root_dir3=None):
-        super().
+        super().__init__(fields='sss')
+        self.root_dir = root_dir
+        self.root_dir2 = root_dir2
+        self.root_dir3 = root_dir3
+    def __call__(self, name):
+        out_dict={}
+        A=np.load(os.path.join(self.root_dir,name))
+        if not os.path.exists(os.path.join(self.root_dir2,name[0:-4]+'.npy')):
+            B=np.zeros_like(A['labelV'])
+            B[...]=A['labelV'][...]
+            B[B>0]=13
+        else:
+            B =np.load(os.path.join(self.root_dir2,name[0:-4]+'.npy'))
+        if self.root_dir3 is not None:
+            qihang_A
