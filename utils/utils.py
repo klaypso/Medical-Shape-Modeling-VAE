@@ -166,4 +166,19 @@ class ReadNPY(BaseTransform):
         else:
             B =np.load(os.path.join(self.root_dir2,name[0:-4]+'.npy'))
         if self.root_dir3 is not None:
-            qihang_A
+            qihang_A=np.load(os.path.join(self.root_dir3,name))
+            
+        out_dict['labelV']=A['labelV'].astype(np.float32)
+        out_dict['multi_organV']=B.astype(np.float32)
+        out_dict['name']=name
+        if self.root_dir3 is  not None:
+            out_dict['softV']=qihang_A['pred'].astype(np.float32)
+        else:
+            out_dict['predV']=A['predV'].astype(np.float32)
+            out_dict['softV']=np.argmax(out_dict['predV'],0).astype(np.float32)
+        print('read done')
+        return out_dict
+
+class NumpyLoader(BaseTransform):
+    """
+    Loads an i
