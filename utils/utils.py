@@ -181,4 +181,20 @@ class ReadNPY(BaseTransform):
 
 class NumpyLoader(BaseTransform):
     """
-    Loads an i
+    Loads an image directly to np.array using npy files
+    """
+
+    def __init__(self, fields, root_dir='/', dtype=np.float32,pre_set=None,load_mask=False):
+        """
+        Args:
+            fields: fields specifying image paths to load
+            root_dir: root dir of images
+            dtype: resulting dtype of the loaded np.array, default is np.float32
+        """
+        super().__init__(fields)
+        self.root_dir = root_dir
+        self.dtype = dtype
+        self.pre_set = pre_set
+        self.load_mask = load_mask
+    def __call__(self, data_dict):
+        if self.pre_set is Non
