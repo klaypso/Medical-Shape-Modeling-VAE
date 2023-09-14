@@ -197,4 +197,12 @@ class NumpyLoader(BaseTransform):
         self.pre_set = pre_set
         self.load_mask = load_mask
     def __call__(self, data_dict):
-        if self.pre_set is Non
+        if self.pre_set is None:
+            self.pre_set = random.sample(self.fields,min(2,len(self.fields)))
+        if data_dict.get(self.pre_set[0],None):
+            data_dict['source'] = np.load(os.path.join(self.root_dir, data_dict[self.pre_set[0]])).astype(self.dtype)
+        if self.load_mask:
+            if data_dict.get(self.pre_set[0]+'_lung',None):
+                data_dict['source_lung'] = np.load(os.path.join(self.root_dir, data_dict[self.pre_set[0]+'_lung'])).astype(self.dtype)
+            if data_dict.get(self.pre_set[0]+'_pancreas',None): 
+                data_dict['source_pancreas'] 
