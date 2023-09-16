@@ -211,4 +211,16 @@ class NumpyLoader(BaseTransform):
                 data_dict['target'] = np.load(os.path.join(self.root_dir, data_dict[self.pre_set[1]])).astype(self.dtype)
             if self.load_mask:
                 if data_dict.get(self.pre_set[1]+'_lung',None):
-                    data_dict['target_lung'] = np.load(os.path.join(self.root_dir, data_dict[self.pre_set[1]+'_lung'])).astype(sel
+                    data_dict['target_lung'] = np.load(os.path.join(self.root_dir, data_dict[self.pre_set[1]+'_lung'])).astype(self.dtype)
+                if data_dict.get(self.pre_set[1]+'_pancreas',None):
+                    data_dict['target_pancreas'] = (np.load(os.path.join(self.root_dir, data_dict[self.pre_set[1]+'_pancreas']))).astype(self.dtype)
+        
+        return data_dict
+        
+class CropResize(BaseTransform):
+    def __init__(self, fields, output_size,pad=32, shift=0):
+        """
+        Args:
+            fields: fields specifying image paths to load
+            root_dir: root dir of images
+            dtype: resulting dtype of the loaded np.a
