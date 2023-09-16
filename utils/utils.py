@@ -205,4 +205,10 @@ class NumpyLoader(BaseTransform):
             if data_dict.get(self.pre_set[0]+'_lung',None):
                 data_dict['source_lung'] = np.load(os.path.join(self.root_dir, data_dict[self.pre_set[0]+'_lung'])).astype(self.dtype)
             if data_dict.get(self.pre_set[0]+'_pancreas',None): 
-                data_dict['source_pancreas'] 
+                data_dict['source_pancreas'] = (np.load(os.path.join(self.root_dir, data_dict[self.pre_set[0]+'_pancreas']))).astype(self.dtype)
+        if len(self.pre_set)>1:
+            if data_dict.get(self.pre_set[1],None):
+                data_dict['target'] = np.load(os.path.join(self.root_dir, data_dict[self.pre_set[1]])).astype(self.dtype)
+            if self.load_mask:
+                if data_dict.get(self.pre_set[1]+'_lung',None):
+                    data_dict['target_lung'] = np.load(os.path.join(self.root_dir, data_dict[self.pre_set[1]+'_lung'])).astype(sel
