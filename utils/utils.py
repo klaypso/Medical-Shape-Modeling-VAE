@@ -238,4 +238,12 @@ class CropResize(BaseTransform):
                     pred = data_dict.get(f+'_pancreas_pred')
                     index = np.array(np.where(pred>0)).T
                     bbox_max = np.max(index,0)
-                   
+                    bbox_min = np.min(index,0)
+                    center = (bbox_max+bbox_min)//2
+                    L = np.max(bbox_max-bbox_min)
+                    pad_width = int(L*0.1)
+                    pred = pred[max(center[0]-L//2-pad_width,0):min(center[0]+L//2+pad_width,pred.shape[0]), \
+                            max(center[1]-L//2-pad_width,0):min(center[1]+L//2+pad_width,pred.shape[1]), \
+                            max(center[2]-L//2-pad_width,0):min(center[2]+L//2+pad_width,pred.shape[2])]
+                    diff = list(L+pad_width*2-np.array(pred.shape))
+                    axis_pad_width =
