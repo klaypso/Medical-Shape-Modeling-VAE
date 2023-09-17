@@ -223,4 +223,19 @@ class CropResize(BaseTransform):
         Args:
             fields: fields specifying image paths to load
             root_dir: root dir of images
-            dtype: resulting dtype of the loaded np.a
+            dtype: resulting dtype of the loaded np.array, default is np.float32
+        """
+        super().__init__(fields)
+        self.output_size = output_size
+        self.pad = pad
+        self.shift = shift
+    def __call__(self,data_dict):
+        #pad_width=32
+        shift = self.shift
+        for f in self.fields:
+            if data_dict.get(f) is not None:
+                if isinstance(data_dict.get(f+'_pancreas_pred') ,np.ndarray):
+                    pred = data_dict.get(f+'_pancreas_pred')
+                    index = np.array(np.where(pred>0)).T
+                    bbox_max = np.max(index,0)
+                   
