@@ -246,4 +246,13 @@ class CropResize(BaseTransform):
                             max(center[1]-L//2-pad_width,0):min(center[1]+L//2+pad_width,pred.shape[1]), \
                             max(center[2]-L//2-pad_width,0):min(center[2]+L//2+pad_width,pred.shape[2])]
                     diff = list(L+pad_width*2-np.array(pred.shape))
-                    axis_pad_width =
+                    axis_pad_width = [(int(cur_diff/2), cur_diff-int(cur_diff/2)) for cur_diff in diff]
+                    pred = np.pad(pred,axis_pad_width)
+                    
+                    data_dict[f+'_pancreas_pred']=resize(pred,self.output_size,order=0,anti_aliasing=False)
+                else:
+                    index = np.array(np.where(data_dict[f+'_pancreas']>0)).T
+                    # print("pancreas: ", data_dict[f+'_pancreas'].shape)
+                    # print("picture: ", data_dict[f].shape)
+                    # print("index: ", index.shape)
+                    if index.shape[0
