@@ -275,4 +275,10 @@ class CropResize(BaseTransform):
                 axis_pad_width = [(int(cur_diff/2), cur_diff-int(cur_diff/2)) for cur_diff in diff]
                 
                 label = np.pad(label,axis_pad_width)
-             
+                data_dict['ori_shape'] += list(label.shape)
+                data_dict['ori_shape'] = np.array(data_dict['ori_shape'])
+                img = img[max(center[0]-L//2-pad_width+shift,0):min(center[0]+L//2+pad_width+shift,img.shape[0]), \
+                            max(center[1]-L//2-pad_width+shift,0):min(center[1]+L//2+pad_width+shift,img.shape[1]), \
+                            max(center[2]-L//2-pad_width+shift,0):min(center[2]+L//2+pad_width+shift,img.shape[2])]
+                diff = list(L+pad_width*2-np.array(img.shape))
+                axis_pad_width = [(int(cur_diff/
