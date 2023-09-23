@@ -295,4 +295,19 @@ class CropResize(BaseTransform):
 
 class NumpyLoader_Multi(BaseTransform):
     """
-    Lo
+    Loads an image directly to np.array using npy files
+    """
+
+    def __init__(self, fields, root_dir='/', dtype=np.float32,load_mask=False,load_pred=False):
+        """
+        Args:
+            fields: fields specifying image paths to load
+            root_dir: root dir of images
+            dtype: resulting dtype of the loaded np.array, default is np.float32
+        """
+        super().__init__(fields)
+        self.root_dir = root_dir
+        self.dtype = dtype
+        self.load_mask = load_mask
+        self.load_pred = load_pred
+    
