@@ -268,4 +268,11 @@ class CropResize(BaseTransform):
                 img = data_dict.get(f)
                 label = data_dict.get(f+'_pancreas')
                 data_dict['ori_shape']=list(label.shape)
-                label = label[max(cen
+                label = label[max(center[0]-L//2-pad_width+shift,0):min(center[0]+L//2+pad_width+shift,label.shape[0]), \
+                            max(center[1]-L//2-pad_width+shift,0):min(center[1]+L//2+pad_width+shift,label.shape[1]), \
+                            max(center[2]-L//2-pad_width+shift,0):min(center[2]+L//2+pad_width+shift,label.shape[2])]
+                diff = list(L+pad_width*2-np.array(label.shape))
+                axis_pad_width = [(int(cur_diff/2), cur_diff-int(cur_diff/2)) for cur_diff in diff]
+                
+                label = np.pad(label,axis_pad_width)
+             
