@@ -281,4 +281,18 @@ class CropResize(BaseTransform):
                             max(center[1]-L//2-pad_width+shift,0):min(center[1]+L//2+pad_width+shift,img.shape[1]), \
                             max(center[2]-L//2-pad_width+shift,0):min(center[2]+L//2+pad_width+shift,img.shape[2])]
                 diff = list(L+pad_width*2-np.array(img.shape))
-                axis_pad_width = [(int(cur_diff/
+                axis_pad_width = [(int(cur_diff/2), cur_diff-int(cur_diff/2)) for cur_diff in diff]
+                img = np.pad(img,axis_pad_width)
+                # print("1: ", data_dict[f].max(), data_dict[f].min())
+                # print("2: ", data_dict[f].shape, self.output_size)
+                data_dict[f]=resize(img,self.output_size)
+                # print(self.output_size)
+                # print("3: ", data_dict[f].max(), data_dict[f].min())
+                data_dict[f+'_pancreas']=resize(label,self.output_size,order=0,anti_aliasing=False)
+
+        return data_dict
+
+
+class NumpyLoader_Multi(BaseTransform):
+    """
+    Lo
