@@ -310,4 +310,13 @@ class NumpyLoader_Multi(BaseTransform):
         self.dtype = dtype
         self.load_mask = load_mask
         self.load_pred = load_pred
-    
+    def __call__(self, data_dict):
+        for f in self.fields:
+            if data_dict.get(f) is not None:
+                data_dict[f] = np.load(os.path.join(self.root_dir, data_dict[f])).astype(self.dtype)
+            if self.load_mask:
+                if data_dict.get(f+'_pancreas',None): 
+                    data_dict[f+'_pancreas'] = np.load(os.path.join(self.root_dir, data_dict[f+'_pancreas'])).astype(self.dtype)
+            if self.load_pred:
+                if data_dict.get(f+'_pancreas_pred',None): 
+                    data_dict[f+'_panc
