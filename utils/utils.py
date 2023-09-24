@@ -319,4 +319,17 @@ class NumpyLoader_Multi(BaseTransform):
                     data_dict[f+'_pancreas'] = np.load(os.path.join(self.root_dir, data_dict[f+'_pancreas'])).astype(self.dtype)
             if self.load_pred:
                 if data_dict.get(f+'_pancreas_pred',None): 
-                    data_dict[f+'_panc
+                    data_dict[f+'_pancreas_pred'] = np.load(os.path.join(self.root_dir, data_dict[f+'_pancreas_pred'])).astype(self.dtype)
+        return data_dict
+
+
+class NumpyLoader_Multi_merge(BaseTransform):
+    """
+    Loads an image directly to np.array using npy files
+    """
+
+    def __init__(self, fields, root_dir='/', middle_path='/', dtype=np.float32,load_mask=False,load_pred=False,load_pseudo=False,load_seg_npy=False,mask_index=None):
+        """
+        Args:
+            fields: fields specifying image paths to load
+            root_dir: root dir of imag
