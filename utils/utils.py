@@ -358,4 +358,15 @@ class NumpyLoader_Multi_merge(BaseTransform):
             merge_data = np.load(os.path.join(self.root_dir, input_string))
             # if self.load_seg_npy:
             #     data_dict[f] = merge_data[0,1,...].astype(self.dtype)
-            #     data_dict[f+'_pancreas'] = merge_data[0,1,...].astype(s
+            #     data_dict[f+'_pancreas'] = merge_data[0,1,...].astype(self.dtype)
+            #     data_dict[f+'_score'] = np.array([score[data_dict['id']]])
+            #     continue
+            data_dict[f] = merge_data[...,0].astype(self.dtype)
+            if self.load_mask:
+                if self.mask_index is None:
+                    data_dict[f+'_pancreas'] = merge_data[...,1].astype(self.dtype)
+                else:
+                    data_dict[f+'_pancreas'] = np.zeros_like(merge_data[...,1])
+                    for label in self.mask_index:
+                        if not isinstance(label[0], list): label[0] = [label[0]]
+                        for lab in label[
