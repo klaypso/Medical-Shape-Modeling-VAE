@@ -348,4 +348,14 @@ class NumpyLoader_Multi_merge(BaseTransform):
         data_dict={}
         data_dict['id'] = ''.join(re.findall(r'\d+', input_string))
         
-        # score = json.load(open("/mnt/
+        # score = json.load(open("/mnt/sdd/yaoyuan/VAE_segmentation/MaskData/score.json", 'r'))
+        # aa = data_dict['id']
+        # filename = os.path.join('compare/', f'{aa}_recon.pt')
+        # torch.save(batch[label_key+'_recon_pred'][0], filename)
+        
+        # print(data_dict['id'])
+        for f in self.fields:
+            merge_data = np.load(os.path.join(self.root_dir, input_string))
+            # if self.load_seg_npy:
+            #     data_dict[f] = merge_data[0,1,...].astype(self.dtype)
+            #     data_dict[f+'_pancreas'] = merge_data[0,1,...].astype(s
