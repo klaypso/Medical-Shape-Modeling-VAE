@@ -369,4 +369,12 @@ class NumpyLoader_Multi_merge(BaseTransform):
                     data_dict[f+'_pancreas'] = np.zeros_like(merge_data[...,1])
                     for label in self.mask_index:
                         if not isinstance(label[0], list): label[0] = [label[0]]
-                        for lab in label[
+                        for lab in label[0]:
+                            data_dict[f+'_pancreas'][merge_data[...,1]==lab]=label[1]
+                    data_dict[f+'_pancreas'] = data_dict[f+'_pancreas'].astype(self.dtype)
+                    # print(data_dict[f+'_pancreas'].shape)
+            if self.load_pseudo:
+                filename = os.path.join(self.middle_path, '{}_pred.npy'.format(data_dict['id']))
+                data_dict[f+'_pancreas_pseudo'] = np.load(filename)
+                # may introduce bug here
+                # data_dict[f+'_pancreas_pseudo'] = data_dict[f+'_pancreas_pseudo'].cpu().detat
