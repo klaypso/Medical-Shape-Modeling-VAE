@@ -377,4 +377,21 @@ class NumpyLoader_Multi_merge(BaseTransform):
                 filename = os.path.join(self.middle_path, '{}_pred.npy'.format(data_dict['id']))
                 data_dict[f+'_pancreas_pseudo'] = np.load(filename)
                 # may introduce bug here
-                # data_dict[f+'_pancreas_pseudo'] = data_dict[f+'_pancreas_pseudo'].cpu().detat
+                # data_dict[f+'_pancreas_pseudo'] = data_dict[f+'_pancreas_pseudo'].cpu().detatch().numpy()[1]
+            if self.load_pred:
+                data_dict[f+'_pancreas_pred'] = merge_data[...,2].astype(self.dtype)
+        return data_dict
+
+
+
+class PadToSize(BaseTransform):
+    """
+    Pads numpy array to desired size, if necessary. IF array is larger or equal
+    in size, do nothing. All padding is "right-sided" padding
+    """
+
+    def __init__(self, fields, size, pad_val=0,seg_pad_val=0, store_orig_size=True,random_subpadding=True,load_mask=False):
+        """
+        size: the desired output size
+        pad_val: the value to use for padding
+        store_orig_size: if true, ma
