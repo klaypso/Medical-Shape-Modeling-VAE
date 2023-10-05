@@ -394,4 +394,19 @@ class PadToSize(BaseTransform):
         """
         size: the desired output size
         pad_val: the value to use for padding
-        store_orig_size: if true, ma
+        store_orig_size: if true, makes a new field storing the original size,
+            which is sometimes needed for some applications
+
+        """
+        super().__init__(fields)
+        self.size = np.array(size, dtype=np.int)
+        self.pad_val = pad_val
+        self.seg_pad_val = seg_pad_val
+        self.store_orig_size = store_orig_size
+        self.random_subpadding=random_subpadding
+        self.load_mask=load_mask
+    def __call__(self, data_dict):
+        start_idx=0
+        for field in self.fields:
+            val = data_dict.get(field)
+            val_lung = data_dict.get(fie
