@@ -409,4 +409,14 @@ class PadToSize(BaseTransform):
         start_idx=0
         for field in self.fields:
             val = data_dict.get(field)
-            val_lung = data_dict.get(fie
+            val_lung = data_dict.get(field+'_lung')
+            val_pancreas = data_dict.get(field+'_pancreas')
+            if  val is not None:
+                orig_size = np.array(val.shape, dtype=np.int)
+                # if any of the pad dims are greater than the orig_size, do pad
+                if np.sum(np.greater(self.size, orig_size)) > 0:
+                    diff = self.size - orig_size
+                    diff[diff < 0] = 0
+                    # set up right-side padding
+                    pad_width = [(int(cur_diff/2), cur_diff-int(cur_diff/2)) for cur_diff in diff]
+                    val =
