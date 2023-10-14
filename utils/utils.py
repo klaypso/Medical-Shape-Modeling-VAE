@@ -419,4 +419,14 @@ class PadToSize(BaseTransform):
                     diff[diff < 0] = 0
                     # set up right-side padding
                     pad_width = [(int(cur_diff/2), cur_diff-int(cur_diff/2)) for cur_diff in diff]
-                    val =
+                    val = np.pad(val, pad_width, mode='constant',
+                                constant_values=self.pad_val)
+                    data_dict[field] = val
+                    if self.load_mask:
+                        if val_lung is not None:
+                            val_lung = np.pad(val_lung, pad_width, mode='constant',
+                                    constant_values=self.seg_pad_val)
+                            data_dict[field+'_lung'] = val_lung
+                        if val_pancreas is not None:
+                            val_pancreas = np.pad(val_pancreas, pad_width, mode='constant',
+ 
