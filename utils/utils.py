@@ -429,4 +429,13 @@ class PadToSize(BaseTransform):
                             data_dict[field+'_lung'] = val_lung
                         if val_pancreas is not None:
                             val_pancreas = np.pad(val_pancreas, pad_width, mode='constant',
- 
+                                    constant_values=self.seg_pad_val)
+                            data_dict[field+'_pancreas'] = val_pancreas
+                    
+                if np.sum(np.greater(orig_size,self.size)) > 0:
+                    #if not type(start_idx)==list: for consistency
+                    # remove random supsampling when concate sup with unsup fxxk
+                    maxes = list(orig_size-self.size)
+                    if self.random_subpadding:
+                        start_idx = [random.randint(0, max(maxy,0)) for maxy in maxes]
+                    el
