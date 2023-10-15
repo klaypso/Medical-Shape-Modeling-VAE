@@ -455,4 +455,25 @@ class PadToSize(BaseTransform):
                             data_dict[field+'_lung'] = val_lung
                         if val_pancreas is not None:
                             val_pancreas = val_pancreas[start_idx[0]:start_idx[0]+self.size[0],start_idx[1]:start_idx[1]+self.size[1],start_idx[2]:start_idx[2]+self.size[2]]
-                     
+                            data_dict[field+'_pancreas'] = val_pancreas
+        return data_dict
+
+
+class Reshape(BaseTransform):
+    """
+    Reshapes tensor without changing contents
+    """
+
+    def __init__(self, fields, reshape_view=None):
+        super().__init__(fields)
+
+        self._reshape_view = reshape_view
+
+    def __call__(self, data_dict):
+        super().__call__(data_dict)
+
+        for field in self.fields:
+
+            if isinstance(data_dict.get(field) ,np.ndarray):
+                if self._reshape_view is not None:
+                    data_dict[field] = data_dict[f
