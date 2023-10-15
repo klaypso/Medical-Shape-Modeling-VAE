@@ -438,4 +438,14 @@ class PadToSize(BaseTransform):
                     maxes = list(orig_size-self.size)
                     if self.random_subpadding:
                         start_idx = [random.randint(0, max(maxy,0)) for maxy in maxes]
-                    el
+                    else:
+                        start_idx = [max(maxy,0) for maxy in maxes]
+                    '''
+                    if self.load_mask:
+                        if val_pancreas is not None:
+                            x,y,z = np.where(val_pancreas>0)
+                            start_idx[0] = min(max((np.max(x)+np.min(x))//2-self.size[0]//2,0),orig_size[0]-self.size[0])
+                            #print('start ',start_idx[0])
+                    '''
+
+                    data_dict[field] = val[start_idx[0]:start_idx[0]+self.size[0],start_idx[1]:start_idx[1]+self.size[1],start_idx[2]:s
