@@ -448,4 +448,11 @@ class PadToSize(BaseTransform):
                             #print('start ',start_idx[0])
                     '''
 
-                    data_dict[field] = val[start_idx[0]:start_idx[0]+self.size[0],start_idx[1]:start_idx[1]+self.size[1],start_idx[2]:s
+                    data_dict[field] = val[start_idx[0]:start_idx[0]+self.size[0],start_idx[1]:start_idx[1]+self.size[1],start_idx[2]:start_idx[2]+self.size[2]]
+                    if self.load_mask:
+                        if val_lung is not None:
+                            val_lung = val_lung[start_idx[0]:start_idx[0]+self.size[0],start_idx[1]:start_idx[1]+self.size[1],start_idx[2]:start_idx[2]+self.size[2]]
+                            data_dict[field+'_lung'] = val_lung
+                        if val_pancreas is not None:
+                            val_pancreas = val_pancreas[start_idx[0]:start_idx[0]+self.size[0],start_idx[1]:start_idx[1]+self.size[1],start_idx[2]:start_idx[2]+self.size[2]]
+                     
