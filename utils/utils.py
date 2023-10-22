@@ -476,4 +476,25 @@ class Reshape(BaseTransform):
 
             if isinstance(data_dict.get(field) ,np.ndarray):
                 if self._reshape_view is not None:
-                    data_dict[field] = data_dict[f
+                    data_dict[field] = data_dict[field].reshape(self._reshape_view)
+                else:
+                    data_dict[field] = data_dict[field].reshape([-1,1]+list(data_dict[field].shape))
+        return data_dict
+
+
+class ExtendSqueeze(BaseTransform):
+    """
+    Reshapes tensor without changing contents
+    """
+
+    def __init__(self, fields, dimension=-1, mode=1):
+        super().__init__(fields)
+
+        self.dimension = dimension
+        self.mode = mode
+    def __call__(self, data_dict):
+        super().__call__(data_dict)
+
+        for field in self.fields:
+
+            if
