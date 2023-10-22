@@ -497,4 +497,19 @@ class ExtendSqueeze(BaseTransform):
 
         for field in self.fields:
 
-            if
+            if isinstance(data_dict.get(field) ,np.ndarray):
+                if self.mode==1:
+                    data_dict[field] = np.expand_dims(data_dict[field],axis=self.dimension)
+                if self.mode==0:
+                    data_dict[field] = np.squeeze(data_dict[field],axis=self.dimension)                    
+        return data_dict
+
+
+class Clip(BaseTransform):
+    """
+    Will clip numpy arrays and pytorch tensors
+    """
+    def __init__(self, fields, new_min=0.0, new_max=1.0):
+        """
+        new_min: min value to clip to
+        new_max: max value to cli
