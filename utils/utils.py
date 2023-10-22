@@ -512,4 +512,20 @@ class Clip(BaseTransform):
     def __init__(self, fields, new_min=0.0, new_max=1.0):
         """
         new_min: min value to clip to
-        new_max: max value to cli
+        new_max: max value to clip to
+        """
+        super().__init__(fields)
+
+        self._new_min = new_min
+        self._new_max = new_max
+
+    def __call__(self, data_dict):
+
+        for field in self.fields:
+            if data_dict.get(field) is not None:
+                val = data_dict[field]
+                # check if numpy or torch.Tensor, and call appropriate method
+                if isinstance(val, torch.Tensor):
+                    data_dict[field] = torch.clamp(val, self._new_min, self._new_max)
+                else:
+                    data_dict[field] = np.clip(val, self._new_min, self._new_
