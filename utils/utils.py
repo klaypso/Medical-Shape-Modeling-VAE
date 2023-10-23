@@ -528,4 +528,22 @@ class Clip(BaseTransform):
                 if isinstance(val, torch.Tensor):
                     data_dict[field] = torch.clamp(val, self._new_min, self._new_max)
                 else:
-                    data_dict[field] = np.clip(val, self._new_min, self._new_
+                    data_dict[field] = np.clip(val, self._new_min, self._new_max)
+
+        return data_dict
+
+
+class Binarize(BaseTransform):
+    """
+    Binarize numpy arrays, or torch.tensors. Note, if doing it to
+    torch.Tensor, this will copy to cpu and perform numpy operation
+    """
+    def __init__(self, fields, threshold=0.5, new_min=0, new_max=1, dtype=np.float32):
+        """
+        threshold: threshold value
+        new_min: new value for values below threshold
+        new_max: new value for values greater or equal to threshold
+        dtype: dtype of resulting array
+        """
+        super().__init__(fields)
+    
