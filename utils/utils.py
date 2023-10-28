@@ -561,4 +561,20 @@ class Binarize(BaseTransform):
                     is_torch = True
 
                 data_dict[field] = np.where(val >= self._threshold,
-                                            self._new_max, self._new_min).astype(self.dt
+                                            self._new_max, self._new_min).astype(self.dtype)
+
+                # convert back to tensor if needed
+                if is_torch:
+                    data_dict[field] = torch.from_numpy(data_dict[field])
+        return data_dict
+
+
+class CenterIntensities(BaseTransform):
+    """
+    Transform that subtracts by a subtrahend and divides by a divisor, most
+    often done to whiten data by subtracting the mean and dividing by the std
+    deviation.
+
+    Note, this class assumes the pytorch shape conventions:
+        https://pytorch.org/docs/stable/nn.html#torch.nn.Conv2d
+    which consider the 
