@@ -592,4 +592,20 @@ class CenterIntensities(BaseTransform):
 
         # convert any lists to np.arrays, with an extra singleton dimension
         # to allow broadcasting
-        if isinstance(diviso
+        if isinstance(divisor, list):
+            divisor = np.array(divisor)
+            divisor = np.expand_dims(divisor, 1)
+        if isinstance(subtrahend, list):
+            subtrahend = np.array(subtrahend)
+            subtrahend = np.expand_dims(subtrahend, 1)
+        self.subtrahend = subtrahend
+        self.divisor = divisor
+
+    def __call__(self, data_dict):
+
+        for field in self.fields:
+            if data_dict.get(field) is not None:
+                old_shape = data_dict[field].shape
+
+                # reshape val, to allow broadcasting over 2D, 3D, or nd data
+                val = data_dic
