@@ -546,4 +546,19 @@ class Binarize(BaseTransform):
         dtype: dtype of resulting array
         """
         super().__init__(fields)
-    
+        self._threshold = threshold
+        self._new_min = new_min
+        self._new_max = new_max
+        self.dtype = dtype
+
+    def __call__(self, data_dict):
+        for field in self.fields:
+            if data_dict.get(field) is not None:
+                val = data_dict[field]
+                is_torch = False
+                if isinstance(val, torch.Tensor):
+                    val = val.cpu().numpy()
+                    is_torch = True
+
+                data_dict[field] = np.where(val >= self._threshold,
+                                            self._new_max, self._new_min).astype(self.dt
