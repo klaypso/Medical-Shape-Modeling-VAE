@@ -577,4 +577,19 @@ class CenterIntensities(BaseTransform):
 
     Note, this class assumes the pytorch shape conventions:
         https://pytorch.org/docs/stable/nn.html#torch.nn.Conv2d
-    which consider the 
+    which consider the first dimension (index 0) to be the channel dimension.
+    """
+
+    def __init__(self, fields, subtrahend, divisor=1.0):
+        """
+        Args:
+            fields: fields to apply centering
+            subtrahend: the subtrahend used to subtract, if a list then subtraction
+                is performed per channel
+            divisor: sames as subtrahend, but specifies the divisor.
+        """
+        super().__init__(fields)
+
+        # convert any lists to np.arrays, with an extra singleton dimension
+        # to allow broadcasting
+        if isinstance(diviso
