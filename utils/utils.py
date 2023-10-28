@@ -608,4 +608,24 @@ class CenterIntensities(BaseTransform):
                 old_shape = data_dict[field].shape
 
                 # reshape val, to allow broadcasting over 2D, 3D, or nd data
-                val = data_dic
+                val = data_dict[field].reshape((data_dict[field].shape[0], -1))
+
+                # perform centering
+                val -= self.subtrahend
+                val /= self.divisor
+                data_dict[field] = val.reshape(old_shape)
+
+        return data_dict
+
+
+class image_resize:
+    def __init__(self,fields,target_size=64):
+        self.fields = fields
+        self.target_size = target_size
+
+    
+    def __call__(self,data_dict):
+        
+        for field in self.fields:
+            if data_dict.get(field) is not None:
+                if len(field.split('_')
