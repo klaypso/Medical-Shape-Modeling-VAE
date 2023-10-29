@@ -628,4 +628,22 @@ class image_resize:
         
         for field in self.fields:
             if data_dict.get(field) is not None:
-                if len(field.split('_')
+                if len(field.split('_'))>1:
+                    data_dict[field] = resize(data_dict[field],(self.target_size,256,256),order=0).astype(np.float32)
+                else:
+                    data_dict[field] = resize(data_dict[field],(self.target_size,256,256),preserve_range=True, anti_aliasing=True).astype(np.float32)
+        return data_dict
+
+
+
+def load_NII(data_path):
+    reader = sitk.ImageFileReader()
+    reader.SetImageIO("NiftiImageIO")
+    reader.SetFileName(data_path)
+    vol = reader.Execute()
+
+    return vol
+
+def get_synthesis_mask(data_dict):
+    field='venous'
+    mask_bone_new = data_dic
