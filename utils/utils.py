@@ -692,4 +692,18 @@ def align_volume(data_dict, model, iterations=1):
 def create_grid_images(source, target, source_aligned, save_folder, slice_num=20, min_win=-280, max_win=420):
     """
     Given source, target, and aligned source volumes, save a slice of each, plus a checkerboard
-    version overlaying the source over the target and the aligned source over the 
+    version overlaying the source over the target and the aligned source over the target. Saves
+    them as .png files. Assumes slices are 512x512, if not then it will upsample them
+
+    Args:
+        source (np.array): source volume
+        target (np.array): target volume
+        source_aligned (np.array): algined source volume
+        save_folder (str): location where you want png images saved
+        slice_num (int): the slice number of the volume you want to compare
+        min_win, max_win: the window to use for saving the image, as min and max intensities
+    """
+
+    s_np = sitk.GetArrayViewFromImage(source)
+    t_np = sitk.GetArrayViewFromImage(target)
+    sa_np = sitk.GetArrayVie
