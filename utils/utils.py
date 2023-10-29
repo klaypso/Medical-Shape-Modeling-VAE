@@ -680,4 +680,16 @@ def align_volume(data_dict, model, iterations=1):
 #     grid = create_grid(d, h, w)
 #     grid = grid.cuda()
 #     volume = volume.unsqueeze(0)
-#     volume = volume.unsqu
+#     volume = volume.unsqueeze(0)
+
+#     dfield = torch.nn.functional.interpolate(dfield, size=(d,h,w), mode='trilinear')
+#     new_image = deform_image(volume, dfield, grid, (d,h,w))
+#     new_image = sitk.GetImageFromArray(new_image.cpu().detach()[0,0,:])
+#     new_image.CopyInformation(sitk_image)
+#     return new_image
+
+
+def create_grid_images(source, target, source_aligned, save_folder, slice_num=20, min_win=-280, max_win=420):
+    """
+    Given source, target, and aligned source volumes, save a slice of each, plus a checkerboard
+    version overlaying the source over the target and the aligned source over the 
