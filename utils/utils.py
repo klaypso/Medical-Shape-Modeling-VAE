@@ -664,3 +664,20 @@ def align_volume(data_dict, model, iterations=1):
             data_dict = model(data_dict)
             if isinstance(data_dict[model.out_key], list):
                 out_image = data_dict[model.out_key][0]
+            else:
+                out_image = data_dict[model.out_key]
+            data_dict[model.source_key] = out_image
+    orig_z = data_dict['arterial_original'].shape[0]
+    print('orig_z', orig_z)
+    data_dict['dfield'] = data_dict['dfield'][:,:,:orig_z,:]
+    return data_dict
+
+
+# def deform_volume(dfield, sitk_image):
+#     volume = sitk.GetArrayViewFromImage(sitk_image)
+#     volume = torch.from_numpy(volume.astype(np.float32)).cuda()
+#     d, h, w = volume.shape
+#     grid = create_grid(d, h, w)
+#     grid = grid.cuda()
+#     volume = volume.unsqueeze(0)
+#     volume = volume.unsqu
