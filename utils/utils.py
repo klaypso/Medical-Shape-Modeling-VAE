@@ -706,4 +706,21 @@ def create_grid_images(source, target, source_aligned, save_folder, slice_num=20
 
     s_np = sitk.GetArrayViewFromImage(source)
     t_np = sitk.GetArrayViewFromImage(target)
-    sa_np = sitk.GetArrayVie
+    sa_np = sitk.GetArrayViewFromImage(source_aligned)
+
+    s_np = s_np[slice_num, :]
+    t_np = t_np[slice_num, :]
+    sa_np = sa_np[slice_num, :]
+
+    if s_np.shape[0] != 512:
+        s_np = resize(s_np, [512, 512])
+    if t_np.shape[0] != 512:
+        t_np = resize(t_np, [512, 512])
+    if sa_np.shape[0] != 512:
+        sa_np = resize(sa_np, [512, 512])
+
+    # create checkerboard binary mask using the kronecker product
+    checkerboard = np.kron([[1, 0] * 16, [0, 1] * 16] * 16, np.ones((16, 16)))
+
+    # use the mask to create an overlayed image
+    orig_check = s_np * checkerboard + (1 - checkerboard) * t_n
