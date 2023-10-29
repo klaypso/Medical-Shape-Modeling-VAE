@@ -646,4 +646,21 @@ def load_NII(data_path):
 
 def get_synthesis_mask(data_dict):
     field='venous'
-    mask_bone_new = data_dic
+    mask_bone_new = data_dict[field] > 200
+    mask_bone_new = binary_dilation(mask_bone_new, iterations=2)
+
+    mask_bowel_NC = np.zeros(data_dict[field].shape)
+    mask_bowel_NC[data_dict[field]<0] = 1
+    data_dict[field+'_syn_mask'] = ((1-mask_bowel_NC) * (1-mask_bone_new)).astype(np.float32)
+    return data_dict
+
+
+def align_volume(data_dict, model, iterations=1):
+
+
+    with torch.no_grad():
+        model = model.cuda()
+        for _ in range(iterations):
+            data_dict = model(data_dict)
+            if isinstance(data_dict[model.out_key], list):
+                out_image = data_dict[model.out_key][0]
