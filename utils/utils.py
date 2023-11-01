@@ -723,4 +723,22 @@ def create_grid_images(source, target, source_aligned, save_folder, slice_num=20
     checkerboard = np.kron([[1, 0] * 16, [0, 1] * 16] * 16, np.ones((16, 16)))
 
     # use the mask to create an overlayed image
-    orig_check = s_np * checkerboard + (1 - checkerboard) * t_n
+    orig_check = s_np * checkerboard + (1 - checkerboard) * t_np
+    align_check = sa_np * checkerboard + (1 - checkerboard) * t_np
+
+    # save images
+    all_images = [s_np, t_np, sa_np, orig_check, align_check]
+    suffixes = ['source.png', 'target.png', 'source_align.png', 'orig_check.png', 'align_check.png']
+    for image, suffix in zip(all_images, suffixes):
+        image = np.clip(image, min_win, max_win)
+        image = image - min_win
+
+        image = image / (max_win - min_win)
+        image = image * 255
+        image = image.astype(np.uint8)
+        cur_path = os.path.join(save_folder, suffix)
+        imageio.imwrite(cur_path, image)
+
+def predict_vol(net, v):
+
+  
