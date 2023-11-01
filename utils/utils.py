@@ -741,4 +741,24 @@ def create_grid_images(source, target, source_aligned, save_folder, slice_num=20
 
 def predict_vol(net, v):
 
-  
+    #v = sitk.GetArrayFromImage(v_sitk)
+    net.eval()
+
+    # Step 1: CNN segmentation
+    (_,_, zSize, ySize, xSize) = v.shape
+    print(v.shape)
+    #v = resize(v, [zSize, 512, 512],preserve_range=True, anti_aliasing=True)
+
+
+    output_prob = np.zeros(shape=(zSize, 512, 512), dtype=np.float32)
+    output_mask = np.zeros(shape=(zSize, 512, 512), dtype=np.int8)
+
+    for k in range(0, zSize):
+
+        input_data = v[:,:,k, :, :]
+        #input_data = input_data.type(torch.cuda.FloatTensor)
+        #input_data = input_data.cuda()
+
+        with torch.no_grad():
+            output_data = net(input_data)
+       
