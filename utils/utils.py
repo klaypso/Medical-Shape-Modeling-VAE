@@ -761,4 +761,19 @@ def predict_vol(net, v):
 
         with torch.no_grad():
             output_data = net(input_data)
-       
+            output_probs = output_data[4].squeeze(0).squeeze(0)   # predict lung segmentation
+
+        output_prob[k, :, :] = output_probs.cpu()
+        output_mask[k, :, :] = output_probs.cpu() > 0.5
+
+
+    output_mask_sitk = sitk.GetImageFromArray(output_mask)  # save mask
+    #output_mask_sitk.SetOrigin(v_sitk.GetOrigin())
+    #output_mask_sitk.SetDirection(v_sitk.GetDirection())
+    #output_mask_sitk.SetSpacing(v_sitk.GetSpacing())
+
+
+    # Step 2: connected component post-processing
+    componentFilter = sitk.ConnectedComponentImageFilter()
+    componentFilter.SetFullyConnected(True)
+    obj_label = componentFilter.Execute(outp
