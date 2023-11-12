@@ -791,4 +791,22 @@ def predict_vol(net, v):
     for index in range(0, obj_recount):
         if label_count[index] < 10000 or index > 1:
             real_index = index + 1
-            relabel_data[r
+            relabel_data[relabel_data == real_index] = 0
+
+    relabel_data[relabel_data > 0] = 1
+
+    relabel_mask = sitk.GetImageFromArray(relabel_data)
+    #relabel_mask.SetOrigin(v_sitk.GetOrigin())
+    #relabel_mask.SetSpacing(v_sitk.GetSpacing())
+    #relabel_mask.SetDirection(v_sitk.GetDirection())
+
+    return relabel_mask, v.cpu().numpy()
+def mutual_information_3d(x, y, sigma=1, normalized=True):
+    """
+    Computes (normalized) mutual information between two 1D variate from a
+    joint histogram.
+    Parameters
+    ----------
+    x : 1D array
+        first variable
+    
