@@ -809,4 +809,26 @@ def mutual_information_3d(x, y, sigma=1, normalized=True):
     ----------
     x : 1D array
         first variable
-    
+    y : 1D array
+        second variable
+    sigma: float
+        sigma for Gaussian smoothing of the joint histogram
+    Returns
+    -------
+    nmi: float
+        the computed similariy measure
+    """
+    bins = (256, 256)
+    EPS = np.finfo(float).eps
+
+    jh = np.histogram2d(x, y, bins=bins)[0]
+
+    # smooth the jh with a gaussian filter of given sigma
+    ndimage.gaussian_filter(jh, sigma=sigma, mode='constant', output=jh)
+
+    # compute marginal histograms
+    jh = jh + EPS
+    sh = np.sum(jh)
+    jh = jh / sh
+    s1 = np.sum(jh, axis=0).reshape((-1, jh.shape[0]))
+    s2 = np.sum(
