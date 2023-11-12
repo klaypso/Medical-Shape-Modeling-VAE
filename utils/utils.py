@@ -776,4 +776,19 @@ def predict_vol(net, v):
     # Step 2: connected component post-processing
     componentFilter = sitk.ConnectedComponentImageFilter()
     componentFilter.SetFullyConnected(True)
-    obj_label = componentFilter.Execute(outp
+    obj_label = componentFilter.Execute(output_mask_sitk)
+    obj_count = componentFilter.GetObjectCount()
+
+    relabelFilter = sitk.RelabelComponentImageFilter()
+    relabelFilter.SortByObjectSizeOn()
+    obj_relabel = relabelFilter.Execute(obj_label)
+    label_count = relabelFilter.GetSizeOfObjectsInPixels()
+    obj_recount = relabelFilter.GetNumberOfObjects()
+    print(obj_recount, label_count)
+
+    relabel_data = sitk.GetArrayFromImage(obj_relabel)
+
+    for index in range(0, obj_recount):
+        if label_count[index] < 10000 or index > 1:
+            real_index = index + 1
+            relabel_data[r
