@@ -895,4 +895,20 @@ def standard_loss(data_dict, do_mask=True, source_key='align_arterial', target_k
 
 
     # here we compute loss on all outputs, which can happen for PHNN or PSNN models
-    # if we have only one output, we mak
+    # if we have only one output, we make it a list.
+    # e.g., if our model is PHNN or PSNN
+    if not isinstance(deformed_ims, list):
+        deformed_ims = [deformed_ims]
+    standard_loss_sum = 0
+    mask = data_dict[mask_key]
+    for im in deformed_ims:
+        if do_mask:
+            dummy_arterial = mask * im + \
+                (1 - mask) * data_dict[target_key]
+            data_dict['dummy_align_venous'] = dummy_arterial
+        else:
+            data_dict['dummy_align_venous'] = im
+        standard_loss_sum += loss_layer(data_dict[target_key], data_dict['dummy_align_venous'])
+
+    return standard_loss_sum
+def
