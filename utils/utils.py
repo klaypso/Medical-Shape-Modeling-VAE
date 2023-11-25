@@ -845,4 +845,21 @@ def mutual_information_3d(x, y, sigma=1, normalized=True):
     return mi
 def plot_slides(v, display_type='TB'):
 
-    # Plot the slid
+    # Plot the slides
+    d, h, w = v.shape
+    side_w = int(np.ceil(np.sqrt(d)))
+    side_h = int(np.ceil(float(d) / side_w))
+
+    board = np.zeros(((h + 1) * side_h, (w + 1) * side_w, 3))
+
+    if display_type == 'TB':
+        MIN = 1 * np.min(v)   # Rescale the value of voxels into [0, 1], as unsigned byte
+        MAX = 1 * np.max(v)
+        v_n = (v - MIN) / (MAX - MIN)
+
+        for i in range(side_h):
+            for j in range(side_w):
+                if i * side_w + j >= d:
+                    break
+                for k in range(3):
+                    board[(h + 1) * 
