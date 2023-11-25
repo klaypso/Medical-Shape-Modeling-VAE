@@ -875,4 +875,24 @@ def plot_slides(v, display_type='TB'):
                 if i * side_w + j >= d:
                     break
                 for k in range(3):
-                    board[(h + 1) * i + 1: (h + 1) * (i + 1), (w + 1) * j + 1: (w + 1) * (j + 1), k] 
+                    board[(h + 1) * i + 1: (h + 1) * (i + 1), (w + 1) * j + 1: (w + 1) * (j + 1), k] = v_n[i * side_w + j, :, :]
+        board = board.astype(int)
+
+    # Return a 2D array representing the image pixels
+    return board
+
+
+
+
+def standard_loss(data_dict, do_mask=True, source_key='align_arterial', target_key='venous',
+                  mask_key='venous_reg_mask'):
+    """
+    just computes the MSELoss between two images, but uses a mask to specify the image regions
+    that should be used to compute the loss on
+    """
+    loss_layer = MSELoss()
+    deformed_ims = data_dict[source_key]
+
+
+    # here we compute loss on all outputs, which can happen for PHNN or PSNN models
+    # if we have only one output, we mak
