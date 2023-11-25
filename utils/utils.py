@@ -911,4 +911,19 @@ def standard_loss(data_dict, do_mask=True, source_key='align_arterial', target_k
         standard_loss_sum += loss_layer(data_dict[target_key], data_dict['dummy_align_venous'])
 
     return standard_loss_sum
-def
+def smoothness_loss(data_dict):
+    smooth_loss = data_dict['smooth_dform'].mean()
+    return smooth_loss
+
+
+def get_parameter_number(net):
+    total_num = sum(p.numel() for p in net.parameters())
+    trainable_num = sum(p.numel() for p in net.parameters() if p.requires_grad)
+    print("Total: {}".format(total_num))
+    print("Trainable: {}".format(trainable_num))
+    return {'Total': total_num, 'Trainable': trainable_num}
+
+
+class MySpatialTransform(SpatialTransform):
+    def __init__(self, patch_size, patch_center_dist_from_border=30,
+                 do_elastic_deform=Tr
