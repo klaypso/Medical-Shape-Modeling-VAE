@@ -862,4 +862,17 @@ def plot_slides(v, display_type='TB'):
                 if i * side_w + j >= d:
                     break
                 for k in range(3):
-                    board[(h + 1) * 
+                    board[(h + 1) * i + 1: (h + 1) * (i + 1), (w + 1) * j + 1: (w + 1) * (j + 1), k] = v_n[i * side_w + j, :, :]
+
+    if display_type == 'CV2':
+        MIN = 1 * np.min(v)  # Rescale the value of voxels into [0, 255], as unsigned byte
+        MAX = 1 * np.max(v)
+        v_n = (v - MIN) / (MAX - MIN)
+        v_n = (v_n * 255).astype(int)
+
+        for i in range(side_h):
+            for j in range(side_w):
+                if i * side_w + j >= d:
+                    break
+                for k in range(3):
+                    board[(h + 1) * i + 1: (h + 1) * (i + 1), (w + 1) * j + 1: (w + 1) * (j + 1), k] 
