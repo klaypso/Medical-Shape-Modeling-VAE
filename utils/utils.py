@@ -926,4 +926,11 @@ def get_parameter_number(net):
 
 class MySpatialTransform(SpatialTransform):
     def __init__(self, patch_size, patch_center_dist_from_border=30,
-                 do_elastic_deform=Tr
+                 do_elastic_deform=True, alpha=(0., 1000.), sigma=(10., 13.),
+                 do_rotation=True, angle_x=(0, 2 * np.pi), angle_y=(0, 2 * np.pi), angle_z=(0, 2 * np.pi),
+                 do_scale=True, scale=(0.75, 1.25), border_mode_data='nearest', border_cval_data=0, order_data=3,
+                 border_mode_seg='constant', border_cval_seg=0, order_seg=0, random_crop=True, data_key="data",
+                 label_key="seg", p_el_per_sample=1, p_scale_per_sample=1, p_rot_per_sample=1,
+                 independent_scale_for_each_axis=False, p_rot_per_axis:float=1):
+                 
+        
