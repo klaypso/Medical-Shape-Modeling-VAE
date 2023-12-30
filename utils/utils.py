@@ -951,4 +951,10 @@ class MySpatialTransform(SpatialTransform):
 
         ret_val = augment_spatial(data, seg, patch_size=patch_size,
                                   patch_center_dist_from_border=self.patch_center_dist_from_border,
-                                  do_elastic_deform=self.do_elastic_deform, alpha=self.alpha, 
+                                  do_elastic_deform=self.do_elastic_deform, alpha=self.alpha, sigma=self.sigma,
+                                  do_rotation=self.do_rotation, angle_x=self.angle_x, angle_y=self.angle_y,
+                                  angle_z=self.angle_z, do_scale=self.do_scale, scale=self.scale,
+                                  border_mode_data=self.border_mode_data,
+                                  border_cval_data=self.border_cval_data, order_data=self.order_data,
+                                  border_mode_seg=self.border_mode_seg, border_cval_seg=self.border_cval_seg,
+                                  order_seg=self.order_seg, random_crop=self.random_crop,
