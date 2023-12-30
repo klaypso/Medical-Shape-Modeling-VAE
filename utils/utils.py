@@ -933,4 +933,12 @@ class MySpatialTransform(SpatialTransform):
                  label_key="seg", p_el_per_sample=1, p_scale_per_sample=1, p_rot_per_sample=1,
                  independent_scale_for_each_axis=False, p_rot_per_axis:float=1):
                  
-        
+                 super().__init__(patch_size, patch_center_dist_from_border, do_elastic_deform, alpha, sigma, do_rotation, angle_x, angle_y, angle_z, do_scale, scale, border_mode_data, border_cval_data, order_data, border_mode_seg, border_cval_seg, order_seg, random_crop, data_key, label_key, p_el_per_sample, p_scale_per_sample, p_rot_per_sample, independent_scale_for_each_axis, p_rot_per_axis)
+    
+    def __call__(self, data_dict):
+        data = data_dict.get(self.data_key)
+        seg = data_dict.get(self.label_key)
+
+        if self.patch_size is None:
+            if len(data.shape) == 4:
+                patch_si
